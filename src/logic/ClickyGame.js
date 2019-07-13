@@ -1,48 +1,45 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-var   images = ['Eire Flag.jpg', 'Bob2011.jpg', 'Bob2017c.jpg', 'BobDad.jpg', 'Cal Flag 2.JPG', 'Cal Pride.jpg', 'Cliffs of Moor Castle.jpg',
-        'Cliffs of Moor flags.jpg', 'Cliffs of Moor.jpg', 'Dollar Sign - Copy.jpg', 'Eire Flag.jpg', 'Occonnel St Dublin.JPG'];
-var   images2 = ['Eire Flag.jpg', 'Bob2011.jpg', 'Bob2017c.jpg', 'BobDad.jpg', 'Cal Flag 2.JPG', 'Cal Pride.jpg', 'Cliffs of Moor Castle.jpg',
-        'Cliffs of Moor flags.jpg', 'Cliffs of Moor.jpg', 'Dollar Sign - Copy.jpg', 'Eire Flag.jpg', 'Occonnel St Dublin.JPG'];
-var   picked = [];
-var   newArr = new Array(12);
 export default class ClikyGame extends React.Component {
-	
-    getImages(){return images2;}
-    getImage(idx){return images2[idx];}
-	styles=['image-style1','image-style2','image-style3','image-style4','image-style5','image-style6','image-style7','image-style8','style9','style10','style11','style12'];
+
+	styles=['image-style1','image-style2','image-style3','image-style4','image-style5','image-style6','image-style7','image-style8','image-style9','image-style10','image-style11','image-style12'];
 	styles2=this.styles;
-	winCount=0;
+	picked = new Array(12); // this array holds the images picked.
+	winCount=0; // number of wins.
 	getStyle (idx){
-		//alert("getStyle: "+newArr[idx]);
-		return this.styles2[idx];
+		return this.styles2[idx]; // return the style with the picture
+	}
+	startOver()
+	{
+		this.picked = new Array(12);
 	}
     shuffle(arr=null)
     {
         if (arr === null)
-            arr = images;
+            arr = this.styles;
         var min = 0;
         var max = 11;
        
         //alert(newArr.length);hermione12
-		newArr = new Array(12);
-		this.styles2=new Array(12);
-        for (var i in arr)
+		var newArr = new Array(12); // temporary array to hold random numbers
+		this.styles2=new Array(12); // randomized styles will be put in this array
+        for (var i in arr)  // loop through the arr to randomize pics(styles)
         {
-            var random = parseInt((Math.random() * (+max - +min) + +min) + .5);
+            var random = parseInt((Math.random() * (+max - +min) + +min) + .5); // get a random number from 1 to 12.
 
             var tryCount = 0;
-            while (this.isTaken(newArr, random) && ++tryCount < 100)
+            while (this.isTaken(newArr, random) && ++tryCount < 500)// check to see if number already selected, try a maximum of 500 times.
                 random = random = parseInt((Math.random() * (+max - +min) + +min) + .5);
-            if (this.isTaken(newArr, random))
+				
+            if (this.isTaken(newArr, random)) // couldn't find a random number, game over.
             {
                 alert("All Taken");
                 break;
-            } else{
+            } else{ 
 //				alert("random: "+random);
-                newArr[i] = random;
-				this.styles2[random]=this.styles[i];
+                newArr[i] = random; // store randome number.
+				this.styles2[random]=this.styles[i]; // use it to put the image/style in the random style array.
 			}
 			//alert("shuffled");
             //alert(images2[0]);
@@ -51,21 +48,20 @@ export default class ClikyGame extends React.Component {
     }
 	isTaken(arr, pic)
     {
-        for (var i in arr)
-            if (arr[i] === pic)
+        for (var i in arr) // loop through array to see if pic (number) is already in the array.
+            if (arr[i] === pic) // if it is return true.
                 return true;
-        return false;
+        return false; // not in array so not taken.
     }
+	// if number selected by user is in the picked array then game is over.
     gameOver(idx)
     {
-        //alert("gameOver: "+idx);
-        if (this.isTaken(picked, idx))
+        if (this.isTaken(this.picked, idx))
         {
-            //alert("Game Over!");
-            return true;
+            return true; // found in array
         }
-		++this.winCount;
-		picked.push(idx);
-		return false;
+		++this.winCount; // increment win count.
+		this.picked.push(idx); // add to picked array.
+		return false; // return false, i.e. game is not over.
     }
 }
