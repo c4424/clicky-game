@@ -7,44 +7,45 @@ import MetaData from "./meta-data";
 import ClickyGame from "../logic/ClickyGame";
 import "./ButtonPanel.css";
 
-var game = new ClickyGame();
-var state ={
-      total: null,
-      next: null,
-      operation: null,
-      style:null,
-    };
-function getImage(idx)
-{
-    return game.getStyle(idx);
-}
+
+	
+
 export var styles=["image-test","image-test2"];
-function getStyle(idx)
-{
-    //alert(styles[idx]);
-    return game.getStyle(idx);
-}
+
 
 export default class ButtonPanel extends React.Component {
 
   static propTypes = {
     clickHandler: PropTypes.func,
   };
-	//images=game.getImages();
-	winCount=0;
-	gameOver=false;
+  // state of the game including total and current style.
+
+	state ={
+      total: null,
+      next: null,
+      style:null,
+    };
 	
+	game = new ClickyGame(); // instantiate GlickyGame object.
+	
+	winCount=0;
+	gameOver=false; // flag to determine if game is over.
+	getStyle(idx) // get an image from style array.
+	{
+		//alert(styles[idx]);
+		return this.game.getStyle(idx);
+	}
 
 	handleClick = button => {
-		alert(button.props.style);
+		//alert(button.props.style);
 
 		if(this.gameOver)
 		{
 			this.winCount=0;
-			state.total=0;
-			state.next=null;
+			this.state.total=0;
+			this.state.next=null;
 			this.gameOver=false;
-			game.startOver();
+			this.game.startOver();
 			//this.props.clickHandler(state);
 			//return;
 		}
@@ -52,18 +53,18 @@ export default class ButtonPanel extends React.Component {
 		var t = (button.props.style+"").split("image-style")[1];
 		//alert(button.props.style);
 		
-		if (game.gameOver(t))
+		if (this.game.gameOver(t))
 		{
 			alert("Game Over");
-			state.total=0;
-			state.next="Game Over";
+			this.state.total=0;
+			this.state.next="this.game Over";
 			this.gameOver=true;
-			this.props.clickHandler(state);
+			this.props.clickHandler(this.state);
 			return;
 		}
-		state.total="Win: "+(++this.winCount);
-		game.shuffle();
-		this.props.clickHandler(state);
+		this.state.total="Win: "+(++this.winCount);
+		this.game.shuffle();
+		this.props.clickHandler(this.state);
 
 	};
 
@@ -71,23 +72,23 @@ export default class ButtonPanel extends React.Component {
     return (
       <div className="component-button-panel" id="divMainPanel">
         <div>
-          <Button name={getImage(0)} id="1" style={getStyle(0)} clickHandler={this.handleClick} />
-          <Button name={getImage(1)} id="2" style={getStyle(1)} clickHandler={this.handleClick} />
-          <Button name={getImage(2)} id="3" style={getStyle(2)} clickHandler={this.handleClick} />
-          <Button name={getImage(3)} id="4" style={getStyle(3)} clickHandler={this.handleClick} />            
+          <Button name={this.getStyle(0)} id="1" style={this.getStyle(0)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(1)} id="2" style={this.getStyle(1)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(2)} id="3" style={this.getStyle(2)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(3)} id="4" style={this.getStyle(3)} clickHandler={this.handleClick} />            
 
         </div>
         <div>
-          <Button name={getImage(4)}  id="5" style={getStyle(4)} clickHandler={this.handleClick} />
-          <Button name={getImage(5)}  id="6" style={getStyle(5)} clickHandler={this.handleClick} />
-          <Button name={getImage(6)}  id="7" style={getStyle(6)} clickHandler={this.handleClick} />
-          <Button name={getImage(7)}  id="8" style={getStyle(7)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(4)}  id="5" style={this.getStyle(4)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(5)}  id="6" style={this.getStyle(5)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(6)}  id="7" style={this.getStyle(6)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(7)}  id="8" style={this.getStyle(7)} clickHandler={this.handleClick} />
         </div>
         <div>
-          <Button name={getImage(8)}  id="9" style={getStyle(8)} clickHandler={this.handleClick} />
-          <Button name={getImage(9)} id="10" style={getStyle(9)} clickHandler={this.handleClick} />
-          <Button name={getImage(10)} id="11" style={getStyle(10)} clickHandler={this.handleClick} />
-          <Button name={getImage(11)} id="12" style={getStyle(11)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(8)}  id="9" style={this.getStyle(8)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(9)} id="10" style={this.getStyle(9)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(10)} id="11" style={this.getStyle(10)} clickHandler={this.handleClick} />
+          <Button name={this.getStyle(11)} id="12" style={this.getStyle(11)} clickHandler={this.handleClick} />
         </div>
 
       </div>
